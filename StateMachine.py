@@ -50,8 +50,8 @@ def makeStateMachine(dag, time_limit_sec=20, timing_info=False):
             n = s.copy()
             n.extend(p)
             if(stateToString(n) not in dag2.nodes):
-                dag2.add_edge(stateToString(s), stateToString(n))
                 stateStack.append(n)
+            dag2.add_edge(stateToString(s), stateToString(n))
         
         
         t3 = time.time() #timing for whole iteration
