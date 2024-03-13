@@ -25,6 +25,8 @@ def makeStateMachine(dag, time_limit_sec=20, timing_info=False):
     dag2 = nx.DiGraph()
     stateStack = [[]]
     
+    edge_attrs = dict()
+    
     while len(stateStack) > 0:
         t0 = time.time()
         
@@ -53,6 +55,8 @@ def makeStateMachine(dag, time_limit_sec=20, timing_info=False):
                 stateStack.append(n)
             dag2.add_edge(stateToString(s), stateToString(n))
         
+        #add to the edge attributes
+        edge_attrs[stateToString(s), stateToString(n)] = {"new_classes": p}
         
         t3 = time.time() #timing for whole iteration
         #timing code
@@ -68,8 +72,16 @@ def makeStateMachine(dag, time_limit_sec=20, timing_info=False):
             break
     
     t4=time.time()
+    
+    
     #include self edges
-    dag2.add_edges_from([(n,n) for n in dag2.nodes])
+    for n in dag2.nodes:
+        dag2.add_edge(n,n)
+        #add edge attrs for consistancy
+        edge_attrs[n,n] = {"new_classes": []}
+    
+    #attatch the edge attributes
+    nx.set_edge_attributes(dag2, edge_attrs)
     
     t5=time.time()
     
