@@ -31,7 +31,7 @@ def dataWrangling(data : pd.DataFrame,start : str,end : str):
 
     #Extract only the data from this segment 
     cut_table = data[column_list]
-    timesteplookup = {i:col for i,col in enumerate(column_list)}
+    timesteplookup = {col:i for i,col in enumerate(column_list)}
     #Get only students that change there values 
     cut_table = cut_table.dropna(subset=column_list,how='all')
 
