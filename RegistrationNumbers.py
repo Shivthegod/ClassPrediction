@@ -1,7 +1,7 @@
-import networkx as nx
 import PreReqs
 import StateMachine as sm
 import FrequentistFitting as ffit
+import random
 
 #get the model
 dag = PreReqs.getPrereqGraph()
@@ -14,22 +14,32 @@ data = ffit.generate_random_data(G, 1000)
 #fit the model to the data
 ffit.fit_frequentist(G, data)
 
+#Predict registration numbers
 def predict_students_registered(current_state, state_machine_graph):
-    predicted_students = {class_: current_state.get(class_, 0) for class_ in current_state}
+    predicted_students = {'CSCI101': 0, 'CSCI128': 0, 'CSCI200': 0, 'CSCI210': 0, 'CSCI220': 0, 'CSCI261': 0, 'CSCI262': 0, 'CSCI274': 0, 'CSCI306': 0, 'CSCI341': 0, 'CSCI358': 0, 'CSCI370': 0, 'CSCI400': 0, 'CSCI406': 0, 'CSCI442': 0, 'MATH111': 0, 'MATH112': 0, 'MATH213': 0, 'MATH332': 0, 'MATH334': 0}
 
     #Loop through each edge in the state machine
-    for u, v, data in state_machine_graph.edges(data=True):
+    for source, target, data in state_machine_graph.edges(data=True):
         beta = data.get('beta', 0)
         new_classes = data.get('new_classes', [])
 
-        #Update new classes based on the source node beta
-        for class_ in new_classes:
-            predicted_students[class_] += current_state.get(u, 0) * beta
-            predicted_students[u] -= current_state.get(u, 0) * beta
-
+        #Update new classes based on the source node beta ignoring self edges
+        if (source != '[]') & (source != target):
+            for class_ in new_classes:
+                change = current_state.get(source, 0) * beta
+                predicted_students[class_] += change
 
     return predicted_students
 
-current_state = {'CSCI101': 50, 'CSCI128': 100, 'CSCI200': 100, 'CSCI210': 100, 'CSCI220': 100, 'CSCI261': 100, 'CSCI262': 100, 'CSCI274': 100, 'CSCI306': 100, 'CSCI341': 100, 'CSCI358': 100, 'CSCI370': 100, 'CSCI400': 100, 'CSCI406': 100, 'CSCI442': 100, 'MATH111': 100, 'MATH112': 100, 'MATH213': 100, 'MATH332': 100, 'MATH334': 100}
+#For testing with a random current state
+def generate_random_numbers(graph):
+    random_numbers = {}
+    for node in graph.nodes():
+        random_numbers[node] = random.randint(1, 10)  # Generate a random number of students for each state
+    return random_numbers
+
+#generate random current state
+current_state = generate_random_numbers(G)
+
 predicted_students = predict_students_registered(current_state, G)
 print(predicted_students)
