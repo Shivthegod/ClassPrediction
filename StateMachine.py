@@ -55,8 +55,8 @@ def makeStateMachine(dag, time_limit_sec=20, timing_info=False):
                 stateStack.append(n)
             dag2.add_edge(stateToString(s), stateToString(n))
         
-        #add to the edge attributes
-        edge_attrs[stateToString(s), stateToString(n)] = {"new_classes": p}
+            #add to the edge attributes
+            edge_attrs[stateToString(s), stateToString(n)] = {"new_classes": p}
         
         t3 = time.time() #timing for whole iteration
         #timing code
