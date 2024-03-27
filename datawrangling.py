@@ -17,7 +17,7 @@ def list_2_string(l_input: list):
 
             
 def dataWrangling(data : pd.DataFrame,start : str,end : str):
-
+    
     #Get the columns that will be used for this segement we are looking at
     count_flag = False
     column_list = []
@@ -31,7 +31,7 @@ def dataWrangling(data : pd.DataFrame,start : str,end : str):
 
     #Extract only the data from this segment 
     cut_table = data[column_list]
-    
+    timesteplookup = {i:col for i,col in enumerate(column_list)}
     #Get only students that change there values 
     cut_table = cut_table.dropna(subset=column_list,how='all')
 
@@ -72,11 +72,12 @@ def dataWrangling(data : pd.DataFrame,start : str,end : str):
             curr_state = z
         output[i] = pd.Series(student_path)
         
-    return output
+    return output,timesteplookup
 
 
 if __name__ == "__main__":
     df = pd.read_excel("output.xlsx")
-    data = dataWrangling(df,"Fall 2017","Spring 2018")
+    data,dict = dataWrangling(df,"Fall 2017","Spring 2018")
     for d in data:
         print (d)
+    print(dict)
