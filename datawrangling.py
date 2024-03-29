@@ -2,6 +2,27 @@ from ast import List
 import pandas as pd
 import numpy as np
 
+def class_extraction():
+    cat_map = {}
+    with open("prereqs2021.txt", 'r') as p:
+        cat_21 = set()
+        for line in p:
+            vals = line.split(' ')
+            for i in vals:
+                i = i.replace('\n','')
+                cat_21.add(i)
+        cat_map['2021'] = list(cat_21)
+        
+    with open("prereqsnewcat.txt", 'r') as p:
+        cat_prev = set()
+        for line in p:
+            vals = line.split(' ')
+            for i in vals:
+                i = i.replace('\n','')
+                cat_prev.add(i)
+        cat_map['before'] = list(cat_prev)
+    return cat_map
+
 def list_2_string(l_input: list):
     output = "["
     for i in range(len(l_input)):
@@ -81,3 +102,4 @@ if __name__ == "__main__":
     for d in data:
         print (d)
     print(dict)
+    print(class_extraction())
