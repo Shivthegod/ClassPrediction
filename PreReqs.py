@@ -1,7 +1,7 @@
 import networkx as nx
 
 
-def getPrereqGraph(file = 'prereqs2021.txt'):
+def getPrereqGraph(file = 'prereqsnewcat.txt'):
     G = nx.DiGraph()
 
     with open(file) as fp:
