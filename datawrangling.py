@@ -8,8 +8,11 @@ def list_2_string(l_input: list):
         if l_input[i] == '\'\'':
             output += l_input[i]
         else:
-            l_input[i] = l_input[i].replace(' ','\', \'')
-            output += "\'" + l_input[i] + "\'"
+            if type(l_input[i]) != np.float64:
+                l_input[i] = l_input[i].replace(' ','\', \'')
+                output += "\'" + l_input[i] + "\'"
+            else:
+                output += '\'\''
         if i != len(l_input)-1:
             output += ', '
     output += ']'
@@ -64,7 +67,6 @@ def dataWrangling(data : pd.DataFrame,start : str,end : str):
         for x in cut_table_student_row[1:]:
             z = list(curr_state)
             if type(x) != type(0.0):
-            
                 z.append(x)
             else:
                 z.append('\'\'')
@@ -77,7 +79,7 @@ def dataWrangling(data : pd.DataFrame,start : str,end : str):
 
 if __name__ == "__main__":
     df = pd.read_excel("output.xlsx")
-    data,dict = dataWrangling(df,"Fall 2017","Spring 2018")
+    data,dict = dataWrangling(df,"Fall 2017","Spring 2020")
     for d in data:
         print (d)
     print(dict)
